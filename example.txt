@@ -1,0 +1,8 @@
+
+curl http://localhost:8080/user/registre \
+    --include \
+    --header "Content-Type: application/json" \
+    --request "POST" \
+    --data '{"user": "4","password": "password"}'
+
+###
