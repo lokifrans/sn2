@@ -10,10 +10,18 @@ import (
 	_ "github.com/lib/pq"
 )
 
+//const pgcrypto = "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
+
 var schema = `
-CREATE TABLE IF NOT EXISTS public.login (
-    id VARCHAR(100) NOT NULL PRIMARY KEY,
-	password VARCHAR(100) NOT NULL
+CREATE TABLE IF NOT EXISTS public."user" (
+    id uuid NOT NULL DEFAULT gen_random_uuid(),
+    first_name character varying(100) NOT NULL,
+    second_name character varying(100) NOT NULL,
+    age integer NOT NULL,
+    biography character varying(255) NOT NULL,
+    city character varying(100) NOT NULL,
+    password character varying(100) NOT NULL,
+    PRIMARY KEY (id)
 )`
 
 type apiConfig struct {
@@ -35,18 +43,17 @@ func main() {
 		log.Fatal("PORT environment variable is not set")
 	}
 
-	db.MustExec(schema)
+	apiCfg := apiConfig{
+		DB: db,
+	}
 
-	// tx := db.MustBegin()
-	// tx.MustExec("INSERT INTO login (id, password) VALUES ($1, $2)", "qerqer-rqer-qerqe", "pass")
-	// tx.MustExec("INSERT INTO login (id, password) VALUES ($1, $2)", "1qerqer-rqer-qerqe", "pass")
-	// tx.Commit()
+	db.MustExec(schema)
 
 	router := gin.Default()
 
 	router.GET("/health", handlerReadiness)
 	router.GET("/err", handlerErr)
-	router.POST("/user/registre", handlerAddUser)
+	router.POST("/user/registre", apiCfg.handlerAddUser)
 	// router.DELETE("/someDelete", deleting)
 
 	router.Run("127.0.0.1:8080")

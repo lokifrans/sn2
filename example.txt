@@ -6,3 +6,9 @@ curl http://localhost:8080/user/registre \
     --data '{"user": "4","password": "password"}'
 
 ###
+
+curl http://localhost:8080/user/registre \
+    --include \
+    --header "Content-Type: application/json" \
+    --request "POST" \
+    --data '{"first_name": "4","second_name": "second_name","age": "100","biography": "biography","city": "city","password": "password"}'
