@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,7 +10,7 @@ import (
 type account struct {
 	First_name  string `json:"first_name"`
 	Second_name string `json:"second_name"`
-	Age         string `json:"age"`
+	Age         int    `json:"age"`
 	Biography   string `json:"biography"`
 	City        string `json:"city"`
 	Password    string `json:"password"`
@@ -34,9 +33,14 @@ func (cfg *apiConfig) handlerAddUser(c *gin.Context) {
 
 	tx := cfg.DB.MustBegin()
 
-	age, _ := strconv.Atoi(newAccount.Age)
-
-	row := tx.QueryRow(query, newAccount.First_name, newAccount.Second_name, age, newAccount.Biography, newAccount.City, newAccount.Password)
+	row := tx.QueryRow(
+		query,
+		newAccount.First_name,
+		newAccount.Second_name,
+		newAccount.Age,
+		newAccount.Biography,
+		newAccount.City,
+		newAccount.Password)
 
 	if err := row.Scan(&id); err != nil {
 		log.Println(err)
