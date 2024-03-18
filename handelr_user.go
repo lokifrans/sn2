@@ -16,14 +16,14 @@ type account struct {
 	Password    string `json:"password"`
 }
 
+// type id struct {
+// 	id string `json:"id"`
+// }
+
 func (cfg *apiConfig) handlerAddUser(c *gin.Context) {
 
 	var newAccount account
 	var id string
-
-	query := "INSERT INTO public.user (first_name, second_name, age, biography, city, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id "
-
-	log.Println(c.Request.PostForm)
 
 	if err := c.BindJSON(&newAccount); err != nil {
 		return
@@ -31,6 +31,7 @@ func (cfg *apiConfig) handlerAddUser(c *gin.Context) {
 
 	log.Println(newAccount.First_name, "get correct")
 
+	query := "INSERT INTO public.user (first_name, second_name, age, biography, city, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id "
 	tx := cfg.DB.MustBegin()
 
 	row := tx.QueryRow(
@@ -57,5 +58,26 @@ func (cfg *apiConfig) handlerAddUser(c *gin.Context) {
 
 	// !!!change
 	c.String(http.StatusCreated, id)
+
+}
+
+func (cfg *apiConfig) handlerGetUser(c *gin.Context) {
+
+	id := c.Param("id")
+
+	log.Println("requested ID:", id)
+
+	queryFN := "SELECT first_name FROM public.user WHERE id = $1"
+	querySN := "SELECT second_name FROM public.user WHERE id = $1"
+	queryAge := "SELECT age FROM public.user WHERE id = $1"
+
+	var UserI account
+
+	cfg.DB.Get(&UserI.First_name, queryFN, id)
+	cfg.DB.Get(&UserI.Second_name, querySN, id)
+	cfg.DB.Get(&UserI.Age, queryAge, id)
+	log.Println("UserName =", UserI.First_name, "UserLastName =", UserI.Second_name, "Age=", UserI.Age)
+
+	c.IndentedJSON(http.StatusOK, UserI)
 
 }

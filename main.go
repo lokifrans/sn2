@@ -54,6 +54,7 @@ func main() {
 	router.GET("/health", handlerReadiness)
 	router.GET("/err", handlerErr)
 	router.POST("/user/registre", apiCfg.handlerAddUser)
+	router.GET("user/get/:id", apiCfg.handlerGetUser)
 	// router.DELETE("/someDelete", deleting)
 
 	router.Run("127.0.0.1:8080")
