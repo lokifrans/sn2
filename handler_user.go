@@ -16,9 +16,13 @@ type account struct {
 	Password    string `json:"password"`
 }
 
-// type id struct {
-// 	id string `json:"id"`
-// }
+type userInfo struct {
+	First_name  string `json:"first_name"`
+	Second_name string `json:"second_name"`
+	Age         int    `json:"age"`
+	Biography   string `json:"biography"`
+	City        string `json:"city"`
+}
 
 func (cfg *apiConfig) handlerAddUser(c *gin.Context) {
 
@@ -71,7 +75,7 @@ func (cfg *apiConfig) handlerGetUser(c *gin.Context) {
 	querySN := "SELECT second_name FROM public.user WHERE id = $1"
 	queryAge := "SELECT age FROM public.user WHERE id = $1"
 
-	var UserI account
+	var UserI userInfo
 
 	cfg.DB.Get(&UserI.First_name, queryFN, id)
 	cfg.DB.Get(&UserI.Second_name, querySN, id)
