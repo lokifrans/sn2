@@ -1,4 +1,4 @@
-
+###
 curl http://localhost:8080/user/registre \
     --include \
     --header "Content-Type: application/json" \
@@ -6,7 +6,6 @@ curl http://localhost:8080/user/registre \
     --data '{"user": "4","password": "password"}'
 
 ###
-
 curl http://localhost:8080/user/registre \
     --include \
     --header "Content-Type: application/json" \

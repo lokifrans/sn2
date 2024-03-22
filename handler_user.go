@@ -57,11 +57,11 @@ func (cfg *apiConfig) handlerAddUser(c *gin.Context) {
 	log.Println(id)
 
 	if id == "" {
-		c.String(http.StatusBadRequest, "DB can't create user")
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "DB can't create user"})
 	}
 
 	// !!!change
-	c.String(http.StatusCreated, id)
+	c.IndentedJSON(http.StatusCreated, gin.H{"id": id})
 
 }
 
