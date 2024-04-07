@@ -12,7 +12,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-//const pgcrypto = "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
+const pgcrypto = "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
 
 var schema = `
 CREATE TABLE IF NOT EXISTS public."user" (
@@ -62,6 +62,7 @@ func main() {
 		DB: db,
 	}
 
+	db.MustExec(pgcrypto)
 	db.MustExec(schema)
 
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
