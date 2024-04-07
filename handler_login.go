@@ -36,6 +36,7 @@ func (cfg *apiConfig) handlerLogin(c *gin.Context) {
 
 	if password != regReq.Password {
 		c.String(http.StatusBadRequest, "ID or Password wrong")
+		return
 	}
 
 	// Генерируем полезные данные, которые будут храниться в токене
