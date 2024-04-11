@@ -10,4 +10,21 @@ curl http://localhost:8080/user/registre \
     --include \
     --header "Content-Type: application/json" \
     --request "POST" \
-    --data '{"first_name": "4","second_name": "second_name","age": "100","biography": "biography","city": "city","password": "password"}'
+    --data '{"first_name": "100","second_name": "second_name","age": "100","biography": "biography","city": "city","password": "password"}'
+
+
+###
+curl http://localhost:8080/user/get/8eaa0792-4666-4239-ac1b-264d27adeb73
+
+
+###
+curl http://127.0.0.1:8080/login?id=07f6a731-289d-499c-ac01-767ef294f524&password=password \
+    --include \
+    --header "Content-Type: application/json" \
+    --request "POST" \
+    
+
+###
+curl -H 'Accept: application/json' 
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTE0MzgyOTksImlkIjoiMDdmNmE3MzEtMjg5ZC00OTljLWFjMDEtNzY3ZWYyOTRmNTI0Iiwib3JpZ19pYXQiOjE3MTE0MzQ2OTl9.eMZFXFMwTBNCb2RzKaOr8IwMle8mpBEPNlEqDVmXoSg" http://localhost:8080/user/get/07f6a731-289d-499c-ac01-767ef294f524"
+
