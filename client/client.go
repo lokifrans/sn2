@@ -8,6 +8,21 @@ import (
 	"os"
 )
 
+type account_add struct {
+	First_name  string `json:"first_name"`
+	Second_name string `json:"second_name"`
+	Age         int    `json:"age"`
+	Biography   string `json:"biography"`
+	City        string `json:"city"`
+	Password    string `json:"password"`
+}
+
+const (
+	full_name = iota
+	age
+	city
+)
+
 func main() {
 
 	f, err := os.Open("people.csv")
@@ -25,7 +40,7 @@ func main() {
 		if err != nil {
 			log.Fatal()
 		}
-		fmt.Println(row[0], row[1])
+		fmt.Println(row[full_name], row[age], row[city])
 	}
 
 	// httpPostUrl := "http://127.0.0.1:8080/user/registre"
