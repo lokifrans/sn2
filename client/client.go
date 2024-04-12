@@ -6,6 +6,8 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 )
 
 type account_add struct {
@@ -32,7 +34,11 @@ func main() {
 
 	reader := csv.NewReader(f)
 
+	rowNo := 0
+
 	for {
+
+		rowNo++
 		row, err := reader.Read()
 		if err == io.EOF {
 			break
@@ -40,39 +46,52 @@ func main() {
 		if err != nil {
 			log.Fatal()
 		}
-		fmt.Println(row[full_name], row[age], row[city])
+		//fmt.Println(row[full_name], row[age], row[city])
+
+		names := strings.Fields(string(row[full_name]))
+
+		First_name := string(names[1])
+		Second_name := string(names[0])
+		age, err := strconv.Atoi(row[age])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "RowNo %d err %+v\n", rowNo, err)
+			continue
+		}
+		city := string(row[city])
+
+		fmt.Println(First_name, Second_name, age, city)
+
+		// httpPostUrl := "http://127.0.0.1:8080/user/registre"
+		// log.Println("Http POST JSON URL", httpPostUrl)
+
+		// var jsonDate = []byte(`
+		// {
+		// 	"first_name" : "test user",
+		// 	"second_name" : "test user",
+		// 	"age" : 100,
+		// 	"biography" : "test user",
+		// 	"city" : "test user",
+		// 	"password" : "test user"
+		// }`)
+
+		// req, err := http.NewRequest("POST", httpPostUrl, bytes.NewBuffer(jsonDate))
+		// req.Header.Set("CContent-Type", "application/json; charset=UTF-8")
+		// if err != nil {
+		// 	log.Println(err)
+		// }
+
+		// client := &http.Client{}
+		// res, err := client.Do(req)
+		// if err != nil {
+		// 	log.Println()
+		// 	panic(err)
+		// }
+		// defer res.Body.Close()
+
+		// log.Println("\nResponse Status", res.Status)
+		// log.Println("\nResponse Header", res.Header)
+		// body, _ := io.ReadAll(res.Body)
+		// log.Println("\nResponse body", string(body))
 	}
-
-	// httpPostUrl := "http://127.0.0.1:8080/user/registre"
-	// log.Println("Http POST JSON URL", httpPostUrl)
-
-	// var jsonDate = []byte(`
-	// {
-	// 	"first_name" : "test user",
-	// 	"second_name" : "test user",
-	// 	"age" : 100,
-	// 	"biography" : "test user",
-	// 	"city" : "test user",
-	// 	"password" : "test user"
-	// }`)
-
-	// req, err := http.NewRequest("POST", httpPostUrl, bytes.NewBuffer(jsonDate))
-	// req.Header.Set("CContent-Type", "application/json; charset=UTF-8")
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-
-	// client := &http.Client{}
-	// res, err := client.Do(req)
-	// if err != nil {
-	// 	log.Println()
-	// 	panic(err)
-	// }
-	// defer res.Body.Close()
-
-	// log.Println("\nResponse Status", res.Status)
-	// log.Println("\nResponse Header", res.Header)
-	// body, _ := io.ReadAll(res.Body)
-	// log.Println("\nResponse body", string(body))
 
 }
