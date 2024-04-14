@@ -3,8 +3,8 @@ services:
   app:
     container_name: golang_container
     tty: true
-    build: 
-      dockerfile: ./Dockerfile
+    build: ./
+    command: ./app
     ports:
       - 8080:8080
     restart: on-failure
@@ -14,16 +14,16 @@ services:
       - postgresdb
     networks:
       - forsn
-
+      
   postgresdb:
     image: postgres:latest
     container_name: postgres_container
     environment:
-      - POSTGRES_USER=pospostgrestgres
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
       - POSTGRES_DB=postgres
     ports:
-      - '5433:5432'
+      - '5435:5432'
     volumes:
       - ./pg_data:/var/lib/postgresql/data
     networks:

@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  sn2:
+    image: sn2
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
