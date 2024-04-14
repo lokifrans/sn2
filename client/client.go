@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -50,8 +53,8 @@ func main() {
 
 		names := strings.Fields(string(row[full_name]))
 
-		First_name := string(names[1])
-		Second_name := string(names[0])
+		FName := string(names[1])
+		SName := string(names[0])
 		age, err := strconv.Atoi(row[age])
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "RowNo %d err %+v\n", rowNo, err)
@@ -59,21 +62,33 @@ func main() {
 		}
 		city := string(row[city])
 
-		fmt.Println(First_name, Second_name, age, city)
+		//fmt.Println(FName, SName, age, city)
+
+		jsonVar1 := &account_add{
+			First_name:  FName,
+			Second_name: SName,
+			Age:         age,
+			Biography:   "testBio",
+			City:        city,
+			Password:    "testPassword",
+		}
+
+		jsonVar2, _ := json.Marshal(jsonVar1)
+		fmt.Println(string(jsonVar2))
 
 		httpPostUrl := "http://127.0.0.1:8080/user/registre"
 		log.Println("Http POST JSON URL", httpPostUrl)
 
-		var jsonDate = []byte({
-			"first_name" : First_name,
-			"second_name" : Second_name,
-			"age" : age,
-			"biography" : "test bio",
-			"city" : city,
-			"password" : "testPassword"
-		})
+		// var jsonDate = []byte({
+		// 	"first_name" : First_name,
+		// 	"second_name" : Second_name,
+		// 	"age" : age,
+		// 	"biography" : "test bio",
+		// 	"city" : city,
+		// 	"password" : "testPassword"
+		// })
 
-		req, err := http.NewRequest("POST", httpPostUrl, bytes.NewBuffer(jsonDate))
+		req, err := http.NewRequest("POST", httpPostUrl, bytes.NewBuffer(jsonVar2))
 		req.Header.Set("CContent-Type", "application/json; charset=UTF-8")
 		if err != nil {
 			log.Println(err)
