@@ -85,3 +85,7 @@ func (cfg *apiConfig) handlerGetUser(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, UserI)
 
 }
+
+func (cfg *apiConfig) handlerSearchUsers(c *gin.Context) {
+	//
+}
