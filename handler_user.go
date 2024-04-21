@@ -24,6 +24,15 @@ type userInfo struct {
 	City        string `json:"city"`
 }
 
+type searchStruct struct {
+	ID          string `json:"id"`
+	First_name  string `json:"first_name"`
+	Second_name string `json:"second_name"`
+	Age         int    `json:"age"`
+	Biography   string `json:"biography"`
+	City        string `json:"city"`
+}
+
 func (cfg *apiConfig) handlerAddUser(c *gin.Context) {
 
 	var newAccount account
@@ -87,5 +96,20 @@ func (cfg *apiConfig) handlerGetUser(c *gin.Context) {
 }
 
 func (cfg *apiConfig) handlerSearchUsers(c *gin.Context) {
+	firstName := c.Query("firstName")
+	lastName := c.Query("lastName")
+
+	log.Println("requested firstName:", firstName)
+	log.Println("requested secondName:", lastName)
+
+	query := "SELECT id, first_name, second_name, age, biography, city FROM public.user WHERE first_name LIKE $1 AND second_name LIKE $2"
+	var users []searchStruct
+	log.Println("users before=", users)
+
+	cfg.DB.Select(&users, query, firstName+"%", lastName+"%")
+	log.Println("users =", users)
+
+	c.IndentedJSON(http.StatusOK, users)
+
 	//
 }

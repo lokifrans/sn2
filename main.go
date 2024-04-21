@@ -159,7 +159,7 @@ func main() {
 	router.GET("/err", handlerErr)
 	router.POST("/user/registre", apiCfg.handlerAddUser)
 
-	router.POST("/user/search", apiCfg.handlerSearchUsers)
+	router.GET("/user/search", apiCfg.handlerSearchUsers)
 
 	router.POST("/login", authMiddleware.LoginHandler)
 
