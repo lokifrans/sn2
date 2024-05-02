@@ -102,7 +102,7 @@ func (cfg *apiConfig) handlerSearchUsers(c *gin.Context) {
 	log.Println("requested firstName:", firstName)
 	log.Println("requested secondName:", lastName)
 
-	query := "SELECT id, first_name, second_name, age, biography, city FROM public.user WHERE first_name LIKE $1 AND second_name LIKE $2"
+	query := "SELECT id, first_name, second_name, age, biography, city FROM public.user WHERE first_name = $1 AND second_name = $2"
 	var users []searchStruct
 	log.Println("users before=", users)
 
