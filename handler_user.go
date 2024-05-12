@@ -98,14 +98,27 @@ func (cfg *apiConfig) handlerGetUser(c *gin.Context) {
 func (cfg *apiConfig) handlerSearchUsers(c *gin.Context) {
 	firstName := c.Query("firstName")
 	lastName := c.Query("lastName")
+	var users []searchStruct
 
 	log.Println("requested firstName:", firstName)
 	log.Println("requested secondName:", lastName)
 
 	query := "SELECT id, first_name, second_name, age, biography, city FROM public.user WHERE first_name LIKE $1 AND second_name LIKE $2"
-	var users []searchStruct
-
 	cfg.DB.Select(&users, query, firstName+"%", lastName+"%")
+
+	// var qw1 = "('"
+	// var qw2 = "')"
+	// var and = " & "
+	// var suf = ":*"
+	// var toTsquery = "WHERE textsearchable_index_col @@ to_tsquery"
+
+	// var parametrForQ = toTsquery + qw1 + firstName + suf + and + lastName + suf + qw2
+	// log.Println(parametrForQ)
+
+	// query = "SELECT id, first_name, second_name, age, biography, city FROM public.user $1"
+
+	// cfg.DB.Select(&users, query, parametrForQ)
+
 	log.Println("users =", users)
 
 	c.IndentedJSON(http.StatusOK, users)
