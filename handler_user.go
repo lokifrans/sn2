@@ -106,6 +106,11 @@ func (cfg *apiConfig) handlerSearchUsers(c *gin.Context) {
 	query := "SELECT id, first_name, second_name, age, biography, city FROM public.user WHERE first_name LIKE $1 AND second_name LIKE $2"
 	cfg.DB.Select(&users, query, firstName+"%", lastName+"%")
 
+	//query := "SELECT id, first_name, second_name, age, biography, city FROM public.user WHERE textsearchable_index_col @@ to_tsquery('П:* & К:*')"
+	// query := fmt.Sprintf("SELECT id, first_name, second_name, age, biography, city FROM public.user WHERE textsearchable_index_col @@ to_tsquery('%s:* & %s:*')", firstName, lastName)
+	// log.Println(query)
+	// cfg.DB.Select(&users, query)
+
 	// var qw1 = "('"
 	// var qw2 = "')"
 	// var and = " & "
@@ -115,8 +120,7 @@ func (cfg *apiConfig) handlerSearchUsers(c *gin.Context) {
 	// var parametrForQ = toTsquery + qw1 + firstName + suf + and + lastName + suf + qw2
 	// log.Println(parametrForQ)
 
-	// query = "SELECT id, first_name, second_name, age, biography, city FROM public.user $1"
-
+	// query := "SELECT id, first_name, second_name, age, biography, city FROM public.user $1"
 	// cfg.DB.Select(&users, query, parametrForQ)
 
 	log.Println("users =", users)
